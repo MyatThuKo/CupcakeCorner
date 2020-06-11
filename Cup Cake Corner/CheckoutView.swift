@@ -37,7 +37,6 @@ struct CheckoutView: View {
                 }
             })
         }
-        .onAppear(perform: self.order.checkInternet)
         .alert(isPresented: $showConfirmation) {
             Alert.init(title: Text(self.confirmationTitle), message: Text(self.confirmationMessage), dismissButton: .default(Text("Okay")))
         }

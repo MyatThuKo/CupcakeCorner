@@ -28,6 +28,7 @@ struct AddressView: View {
             .disabled(order.hasValidAddress == false)
         }
         .navigationBarTitle("Delivery Details", displayMode: .inline)
+        .onAppear(perform: self.order.checkInternet)
     }
 }
 
