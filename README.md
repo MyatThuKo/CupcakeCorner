@@ -1,4 +1,4 @@
-<h1> Day 49, 50 of 100 Days of SwiftUI </h1>
+<h1> Day 49, 50, 51 of 100 Days of SwiftUI </h1>
 <p> Creating a Cupcake Order App that allows 
 <ol> 
 <li> Adding Codable conformance for @Published properties </li>
@@ -9,7 +9,7 @@
 </ol> 
 </p> 
 
-<h1> Day 51, Challenge Day </h1> 
+<h1> Day 52, Challenge Day </h1> 
 <p> The challenges to complete are 
 <ol> 
 <li> Improving the validation on Address TextField i.e. removing white spaces </li> 
