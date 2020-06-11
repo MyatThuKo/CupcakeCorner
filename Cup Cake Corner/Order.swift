@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Network
 
 class Order: ObservableObject, Codable {
     enum CodingKeys: CodingKey {
@@ -34,9 +35,49 @@ class Order: ObservableObject, Codable {
     @Published var city = ""
     @Published var zipCode = ""
     
+    @Published var internetConnection = false
+    
+    func checkInternet() {
+        let monitor = NWPathMonitor()
+        
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                print("We're connected!")
+                self.internetConnection = true
+            } else {
+                print("No connection.")
+                self.internetConnection = false
+            }
+            
+            print(path.isExpensive)
+        }
+        
+        let queue = DispatchQueue.global(qos: .background)
+        monitor.start(queue: queue)
+        
+        print("Connection -> \(self.internetConnection)")
+    }
+    
     var hasValidAddress: Bool {
         if name.isEmpty || city.isEmpty || streetAddress.isEmpty || zipCode.isEmpty {
             return false
+        }
+        
+        // to remove the white spaces in the beginning of each TextField
+        if name.starts(with: " ") {
+            name = name.trimmingCharacters(in: .whitespaces)
+        }
+        
+        if city.starts(with: " ") {
+            city = city.trimmingCharacters(in: .whitespaces)
+        }
+        
+        if streetAddress.starts(with: " ") {
+            streetAddress = streetAddress.trimmingCharacters(in: .whitespaces)
+        }
+        
+        if zipCode.starts(with: " ") {
+            zipCode = zipCode.trimmingCharacters(in: .whitespaces)
         }
         
         return true

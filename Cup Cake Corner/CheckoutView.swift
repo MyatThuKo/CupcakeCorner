@@ -10,6 +10,7 @@ import SwiftUI
 
 struct CheckoutView: View {
     @ObservedObject var order: Order
+    @State private var confirmationTitle = ""
     @State private var confirmationMessage = ""
     @State private var showConfirmation = false
     
@@ -27,15 +28,25 @@ struct CheckoutView: View {
             }
             .navigationBarTitle("Check Out", displayMode: .inline)
             .navigationBarItems(trailing: Button("Place Order") {
-                self.placeOrder()
+                if self.order.internetConnection {
+                    self.placeOrder()
+                } else {
+                    self.confirmationTitle = "No Internet Connection"
+                    self.confirmationMessage = "Please connect to internet to continue."
+                    self.showConfirmation = true
+                }
             })
         }
+        .onAppear(perform: self.order.checkInternet)
         .alert(isPresented: $showConfirmation) {
-            Alert.init(title: Text("Order Confirmation"), message: Text(self.confirmationMessage), dismissButton: .default(Text("Okay")))
+            Alert.init(title: Text(self.confirmationTitle), message: Text(self.confirmationMessage), dismissButton: .default(Text("Okay")))
         }
     }
     
     func placeOrder() {
+        
+        self.confirmationTitle = "Order Confirmation"
+        
         guard let encoded = try? JSONEncoder().encode(order) else {
             print("Failed to encode order")
             return
